@@ -1,0 +1,30 @@
+restaurant_name:
+    css: 'h2.qrShPb span'
+    xpath: null
+    type: Text
+ratings:
+    css: 'div.CJQ04 span.yi40Hd'
+    xpath: null
+    type: Text
+reviews:
+    css: 'span.NdWbqe span.RDApEe'
+    xpath: null
+    type: Text
+menu:
+    css: 'div.lum-tc-con div div:nth-of-type(n+2)'
+    xpath: null
+    multiple: true
+    type: Text
+    children:
+        item_name:
+            css: div.gq9CCd
+            xpath: null
+            type: Text
+        item_description:
+            css: span.lum-fi-dl
+            xpath: null
+            type: Text
+        item_price:
+            css: 'span.fUcQpe span'
+            xpath: null
+            type: Text
