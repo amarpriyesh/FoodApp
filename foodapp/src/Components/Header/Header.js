@@ -1,26 +1,81 @@
-import logo from '../../logo.svg';
-import './Header.scss';
+import logo from "../../logo.svg";
+import "./Header.scss";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Homepage from "../Homepage/Homepage.js";
+import AIChat from "../AIChat/index.js";
 
 function Header() {
   return (
     <div>
-        <header className="header bg-midnight">
-            <nav className="navbar">
-                <div>
-                  <img src={logo} className="App-logo navbar_logo" alt="logo" />
-                </div>
-                <ul className="nav-links navbar_list">
-                  <li><a href="#" className="navbar_link text-slate-950 font-medium">Home</a></li>
-                  <li><a href="#" className="navbar_link text-slate-950 font-medium">About</a></li>
-                  <li><a href="#" className="navbar_link text-slate-950 font-medium">Services</a></li>
-                  <li><a href="#" className="navbar_link text-slate-950 font-medium">Contact</a></li>
-                </ul>
-                <div>
-                  <a href="#" className="navbar_link text-slate-950 font-medium">Login</a>
-                </div>
-            </nav>
-        </header>
+    <Router>
+      <header className="header bg-midnight">
+        <nav className="navbar">
+          <div>
+            <img src={logo} className="App-logo navbar_logo" alt="logo" />
+          </div>
+          
+           
+              <ul className="nav-links navbar_list">
+                <li>
+                  <a
+                    href="/"
+                    className="navbar_link text-slate-950 font-medium"
+                  >
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="navbar_link text-slate-950 font-medium"
+                  >
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="navbar_link text-slate-950 font-medium"
+                  >
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="navbar_link text-slate-950 font-medium"
+                  >
+                    Contact
+                  </a>
+                </li>
+                <li>
+                <Link
+                  to="/aichat"
+                  className="navbar_link text-slate-950 font-medium"
+                >
+                  AIChat
+                </Link>
+                </li>
+              </ul>
+              <div>
+            <a href="#" className="navbar_link text-slate-950 font-medium">
+              Login
+            </a>
+          </div>
+          </nav>
+      </header>
+
+              <Routes>
+                <Route path="/" element={<Homepage />} />
+                <Route path="/aichat" element={<AIChat />} />
+              </Routes>
+            
+         
+         
+    
+      </Router>
     </div>
+
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />
