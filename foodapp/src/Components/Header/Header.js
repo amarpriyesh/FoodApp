@@ -57,7 +57,7 @@ function Header() {
                 <ul className="nav-links navbar_list">
                   <li><Link to="/" onClick={handleClick} className="navbar_link text-white-950 font-medium">Home</Link></li>
                   <li><Link to="/about" className="navbar_link text-white-950 font-medium">About</Link></li>
-                  <li><a href="#" className="navbar_link text-white-950 font-medium">AI Bot</a></li>
+                  <li><Link to="/aichat" className="navbar_link text-white-950 font-medium">AI Bot</Link></li>
                   <li><a href="#" className="navbar_link text-white-950 font-medium">Contact</a></li>
                 </ul>
                 {profile ? (
@@ -70,6 +70,7 @@ function Header() {
             </nav>
         </header>
     </div>
+
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />

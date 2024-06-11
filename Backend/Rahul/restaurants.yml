@@ -1,0 +1,30 @@
+restaurants:
+    css: a.vwVdIc
+    xpath: null
+    multiple: true
+    type: Text
+    children:
+        name:
+            css: div.dbg0pd
+            xpath: null
+            type: Text
+        ratings:
+            css: span.yi40Hd
+            xpath: null
+            type: Text
+        location:
+            css: 'div:nth-of-type(3)'
+            xpath: null
+            type: Text
+        description:
+            css: 'div.pJ3Ci span'
+            xpath: null
+            type: Text
+        reviews:
+            css: span.RDApEe
+            xpath: null
+            type: Text
+        range:
+            css: 'div > span:nth-of-type(2)'
+            xpath: null
+            type: Text
