@@ -9,7 +9,7 @@ function FoodUploadWrapper() {
       <section className="p-8">
         <div className="
         flex w-full h-full 
-        border-amber-400 border-x border-y 
+        border-[#d64b7d] border-x border-y 
         rounded-md border-dashed 
         p-8">
           <FoodInfomatics></FoodInfomatics>

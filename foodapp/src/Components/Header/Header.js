@@ -1,23 +1,72 @@
 import logo from '../../logo.svg';
 import './Header.scss';
+import { useStore } from '../../store/StoreContext';
+import AboutUs from '../AboutUs/AboutUs';
+import { Link } from 'react-router-dom';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Header() {
+
+  const { changeUploadPage } = useStore();
+  const [ user, setUser ] = useState([]);
+  const [ profile, setProfile ] = useState([]);
+
+  const handleClick = () => {
+    changeUploadPage(true)
+  }
+
+  useEffect(
+    () => {
+      if (user) {
+        axios
+        .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+            headers: {
+                Authorization: `Bearer ${user.access_token}`,
+                Accept: 'application/json'
+            }
+        })
+        .then((res) => {
+            console.log(res.data);
+            setProfile(res.data);
+        })
+        .catch((err) => console.log(err));
+      }
+    },
+    [ user ]
+  );
+
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+  });
+
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+  };
+
   return (
     <div>
         <header className="header bg-midnight">
             <nav className="navbar">
-                <div>
+                <div onClick={handleClick}>
                   <img src={logo} className="App-logo navbar_logo" alt="logo" />
                 </div>
                 <ul className="nav-links navbar_list">
-                  <li><a href="#" className="navbar_link text-slate-950 font-medium">Home</a></li>
-                  <li><a href="#" className="navbar_link text-slate-950 font-medium">About</a></li>
-                  <li><a href="#" className="navbar_link text-slate-950 font-medium">Services</a></li>
-                  <li><a href="#" className="navbar_link text-slate-950 font-medium">Contact</a></li>
+                  <li><Link to="/" onClick={handleClick} className="navbar_link text-white-950 font-medium">Home</Link></li>
+                  <li><Link to="/about" className="navbar_link text-white-950 font-medium">About</Link></li>
+                  <li><a href="#" className="navbar_link text-white-950 font-medium">AI Bot</a></li>
+                  <li><a href="#" className="navbar_link text-white-950 font-medium">Contact</a></li>
                 </ul>
-                <div>
-                  <a href="#" className="navbar_link text-slate-950 font-medium">Login</a>
-                </div>
+                {profile ? (
+                  <div>
+                      <button onClick={logOut}>Log out</button>
+                  </div>
+                ) : (
+                    <button onClick={login} className="navbar_link text-white-950 font-medium">Sign in with Google 🚀</button>
+                )}
             </nav>
         </header>
     </div>
