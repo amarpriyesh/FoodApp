@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import Header from '../Header/Header.js';
 import FoodUploadWrapper from '../FoodUploadWrapper/FoodUploadWrapper.js';
 import FoodInfoWrapper from '../FoodInfoWrapper/FoodInfoWrapper.js';
+import { useStore } from '../../store/StoreContext';
 
 function Homepage() {
-  const [showUploadContent, setshowUploadContent] = useState(false);
+  const { state } = useStore();
   return (
     <div>
-      <Header></Header>
-      {showUploadContent ? <FoodUploadWrapper></FoodUploadWrapper> : <FoodInfoWrapper></FoodInfoWrapper>}
+      {state.showUploadContent ? <FoodUploadWrapper></FoodUploadWrapper> : <FoodInfoWrapper></FoodInfoWrapper>}
     </div>
   );
 }

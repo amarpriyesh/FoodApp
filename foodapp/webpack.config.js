@@ -1,0 +1,5 @@
+resolve: {
+  fallback: {
+    os: false;
+  }
+}
