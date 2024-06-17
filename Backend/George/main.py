@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request, status, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import ultralytics
