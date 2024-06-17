@@ -11,8 +11,9 @@ This is a FastAPI project that provides a backend API for our web application.
 
 1. **Create a Conda Environment**:
 
+```
 conda create -n myenv python=3.9
-
+```
 
 2. **Activate the Environment**:
 
@@ -30,7 +31,9 @@ conda create -n myenv python=3.9
 
 With the Conda environment activated, install the required packages by running:
 
+```
 pip install -r requirements.txt
+```
 
 This will install all the project dependencies listed in the `requirements.txt` file.
 
@@ -39,10 +42,14 @@ This will install all the project dependencies listed in the `requirements.txt` 
 To run the FastAPI server locally, use the provided `run_server.cmd` (Windows) or `run_server.sh` (Unix/macOS) script:
 
 - On Windows:
+```
 run_uvicorn.bat
+```
 
 - On Unix or macOS:
+```
 chmod +x run_server.sh
 ./run_server.sh
+```
 
 The server will start running at `http://localhost:8000`.
