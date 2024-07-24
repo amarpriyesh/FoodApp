@@ -3,8 +3,10 @@ import proteinImg from './proteins.png';
 import Modal from 'react-modal';
 import { IoMdCloseCircle } from "react-icons/io";
 import { IconContext } from "react-icons";
+import { useStore } from '../../store/StoreContext';
 
 function FoodInfomatics() {
+  const { state } = useStore();
   const [cardData, setCardData] = useState({
     recipeName: 'Pav Bhaji',
     stats: [
@@ -59,7 +61,7 @@ function FoodInfomatics() {
 
   return (
     <div className="wrapperSection flex-col !justify-center">
-      <h1 className="text-5xl font-medium text-gray-600 pb-3">{cardData['recipeName']}</h1>
+      <h1 className="text-5xl font-medium text-gray-600 pb-3 capitalize">{state.cardData['recipeName']}</h1>
       <p>{cardData['description']}</p>
       <div className="mt-2">
         <button className="_btn mt-4" onClick={openModal}>View Recipe</button>
@@ -82,7 +84,7 @@ function FoodInfomatics() {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h1 className="text-3xl text-gray-600 text-center modal_title" ref={(_subtitle) => (subtitle = _subtitle)}>{cardData['recipeName']} Recipe</h1>
+        <h1 className="text-3xl text-gray-600 text-center modal_title capitalize" ref={(_subtitle) => (subtitle = _subtitle)}>{state.cardData['recipeName']} Recipe</h1>
         <button onClick={closeModal} className="absolute top-2.5 right-3.5">
           <IconContext.Provider value={{ color: '#4b5563', size: '30px', textAlign: 'center' }}>
             <IoMdCloseCircle />

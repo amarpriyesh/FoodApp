@@ -1,0 +1,28 @@
+schema {
+    query: Query
+}
+
+type Item {
+    id: ID!
+    name: String!
+    description: String!
+    recipe: String!
+    calories: String!
+}
+
+type ItemResult {
+    success: Boolean!
+    errors: [String]
+    item: Item
+}
+
+type ItemsResult {
+    success: Boolean!
+    errors: [String]
+    items: [Item]
+}
+
+type Query {
+    listItems: ItemsResult!
+    getItem(id: ID!): ItemResult!
+}

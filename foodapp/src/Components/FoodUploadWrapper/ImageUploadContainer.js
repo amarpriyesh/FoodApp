@@ -6,7 +6,7 @@ import { useStore } from '../../store/StoreContext';
 
 function ImageUploadContainer() {
 
-  const { changeUploadPage } = useStore();
+  const { changeUploadPage, getImageDetails } = useStore();
 
   const imageUrls = [
     image1,
@@ -17,7 +17,7 @@ function ImageUploadContainer() {
   ];
 
   const imageItems = imageUrls.map(url =>
-    <div><img src={url} className="object-cover	w-32 h-24 px-1.5" alt="img" /></div>
+    <div><img src={url} className="object-contain	w-32 h-24 px-1.5" alt="img" /></div>
   );
 
   const fileInputRef = useRef(null);
@@ -29,7 +29,8 @@ function ImageUploadContainer() {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     console.log('Selected file:', selectedFile);
-    changeUploadPage(false);
+    getImageDetails(selectedFile);
+    // changeUploadPage(false);
     // do the file processing here
   };
 

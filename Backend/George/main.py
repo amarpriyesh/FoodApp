@@ -1,13 +1,21 @@
-from fastapi import FastAPI, Request, status, File, UploadFile
+from fastapi import FastAPI, Request, status, File, UploadFile, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from database import db
+# from sqlalchemy import Column, Integer, String
+from api import models
 import ultralytics
 from ultralytics import YOLO
 import cv2
 import numpy as np
 import base64
 
+from fastapi.websockets import WebSocket
+from fastapi.encoders import jsonable_encoder
+from ariadne import QueryType, make_executable_schema, load_schema_from_path, snake_case_fallback_resolvers, ObjectType
+from ariadne.asgi import GraphQL
+from api.queries import listItems_resolver
 
 app= FastAPI(
     title="Food App Model",
@@ -18,9 +26,34 @@ app= FastAPI(
     licesnes_info=None
 )
 
+query = ObjectType("Query")
+query.set_field("listItems", listItems_resolver)
+
+type_defs = load_schema_from_path("schema.graphql")
+
+# Create executable schema instance
+schema = make_executable_schema(type_defs, query)
+
 app.add_middleware(CORSMiddleware, allow_origins=['*'])
 app.mount("/static",StaticFiles(directory="static/"),name="static")
+# app.mount("/graphql/", GraphQL(schema, debug=True))
 
+# class Item(Base):
+#     __tablename__ = "items"
+
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String)
+#     description = Column(String)
+#     recipe = Column(String)
+#     calories = Column(String)
+
+db.Base.metadata.create_all(db.engine)
+
+# Create GraphQL App instance
+graphql_app = GraphQL(
+    schema,
+    debug=True
+)
 
 async def startup_event():
     """
@@ -34,6 +67,60 @@ async def startup_event():
 
 
 app.add_event_handler("startup", startup_event)
+
+@app.post("/create")
+async def create_item(name: str, description: str, recipe: str, calories: str):
+    item = models.Item(name=name, description=description, recipe=recipe, calories=calories)
+    db.session.add(item)
+    db.session.commit()
+    return {"item added": item.name}
+
+@app.get("/graphql/")
+@app.options("/graphql/")
+async def handle_graphql_explorer(request: Request):
+    return await graphql_app.handle_request(request)
+
+async def get_session():
+    """
+    Function to create and return a database session.
+    """
+    with db.SessionLocal() as session:
+        yield session
+
+# Handle POST requests to execute GraphQL queries
+@app.post("/graphql/")
+async def handle_graphql_query(
+    request: Request,
+    db = Depends(get_session),
+):
+    # Expose database connection to the GraphQL through request's scope
+    request.scope["db"] = db
+    return await graphql_app.handle_request(request)
+
+
+# Handle GraphQL subscriptions over websocket
+@app.websocket("/graphql")
+async def graphql_subscriptions(
+    websocket: WebSocket,
+    db = Depends(get_session),
+):
+    # Expose database connection to the GraphQL through request's scope
+    websocket.scope["db"] = db
+    await graphql_app.handle_websocket(websocket)
+
+# type_defs = load_schema_from_path("schema.graphql")
+# schema = make_executable_schema(
+#     type_defs, snake_case_fallback_resolvers
+# )
+# query = ObjectType("Query")
+# schema = make_executable_schema(type_defs, query)
+
+# def get_context_value(request_or_ws: Request | WebSocket, _data) -> dict:
+#     return {
+#         "request": request_or_ws,
+#         "db": request_or_ws.scope["session"],
+#     }
+
 
 @app.post("/detect")
 async def detect_food(file: UploadFile = File(...)):
@@ -103,4 +190,3 @@ async def root(request: Request):
     </html>
     """
     return HTMLResponse(content=html_content)
-
